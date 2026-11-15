@@ -120,14 +120,13 @@
         }
 
         input[type="number"] {
-            padding: 12px;
+            padding: 10px;
             border: 2px solid var(--border);
             border-radius: 8px;
             font-size: 1.1rem;
             outline: none;
             transition: all 0.2s;
             background: #fff;
-            width: 100%;
         }
 
         input[type="number"]:focus {
@@ -157,43 +156,46 @@
         .breakdown-steps-container {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             margin-top: 20px;
         }
 
-        /* Vertical Row Layout as Requested */
+        /* One-Line Compact Step Card Layout */
         .step-card {
             background: #f8fafc;
             border: 2px solid var(--border);
             border-radius: 12px;
-            padding: 22px;
+            padding: 18px 20px;
             display: flex;
-            flex-direction: column;
-            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
         .step-header {
-            font-size: 1.15rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: var(--primary);
+            min-width: 180px;
         }
 
         .step-equation-line {
             display: flex;
             align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            font-size: 1.2rem;
+            gap: 10px;
+            flex-wrap: nowrap;
+            font-size: 1.15rem;
             font-weight: 600;
         }
 
-        .step-input-box {
-            width: 100%;
-            padding: 12px;
+        .compact-input {
+            width: 90px;
+            padding: 8px;
             border: 2px solid var(--primary);
             border-radius: 8px;
             text-align: center;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             background: white;
         }
@@ -202,7 +204,7 @@
             background: linear-gradient(135deg, #e0f2fe, #f0fdf4);
             border: 2px solid var(--accent);
             border-radius: 12px;
-            padding: 20px;
+            padding: 18px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -212,8 +214,9 @@
 
         .final-answer-card label {
             margin: 0;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--primary-dark);
+            font-weight: 700;
         }
 
         button.action-btn {
@@ -271,7 +274,7 @@
     <!-- MODULE 1: PLACE-VALUE BREAKDOWN -->
     <div id="breakdown" class="card active">
         <h2>Place-Value Breakdown Multiplication</h2>
-        <p style="margin-bottom: 20px; color: var(--text-muted);">Set your multiplier and enter your 3-digit number breakdown. Type your place value, multiply by the multiplier, and type the product — correct answers will glow green!</p>
+        <p style="margin-bottom: 20px; color: var(--text-muted);">Set your multiplier and enter your 3-digit number breakdown. Complete each step in one line — correct answers will glow green!</p>
 
         <div class="input-group" style="max-width: 300px;">
             <label for="bdMultiplier">Enter Multiplier:</label>
@@ -297,51 +300,45 @@
         <div class="breakdown-steps-container">
             <!-- Step 1: Multiply Hundreds -->
             <div class="step-card">
-                <div class="step-header">Step 1: Multiply Hundreds</div>
+                <div class="step-header">Step 1: Hundreds</div>
                 <div class="step-equation-line">
-                    <input type="number" class="step-input-box" id="inputVal100" placeholder="100s value">
+                    <input type="number" class="compact-input" id="inputVal100" placeholder="100s">
                     <span>×</span>
                     <span id="labelMul1" style="font-weight: bold; color: var(--primary);">4</span>
                     <span>=</span>
-                </div>
-                <div>
-                    <input type="number" class="step-input-box" id="ans100" placeholder="Product total">
+                    <input type="number" class="compact-input" id="ans100" placeholder="Product">
                 </div>
             </div>
 
             <!-- Step 2: Multiply Tens -->
             <div class="step-card">
-                <div class="step-header">Step 2: Multiply Tens</div>
+                <div class="step-header">Step 2: Tens</div>
                 <div class="step-equation-line">
-                    <input type="number" class="step-input-box" id="inputVal10" placeholder="10s value">
+                    <input type="number" class="compact-input" id="inputVal10" placeholder="10s">
                     <span>×</span>
                     <span id="labelMul2" style="font-weight: bold; color: var(--primary);">4</span>
                     <span>=</span>
-                </div>
-                <div>
-                    <input type="number" class="step-input-box" id="ans10" placeholder="Product total">
+                    <input type="number" class="compact-input" id="ans10" placeholder="Product">
                 </div>
             </div>
 
             <!-- Step 3: Multiply Ones -->
             <div class="step-card">
-                <div class="step-header">Step 3: Multiply Ones</div>
+                <div class="step-header">Step 3: Ones</div>
                 <div class="step-equation-line">
-                    <input type="number" class="step-input-box" id="inputVal1" placeholder="1s value">
+                    <input type="number" class="compact-input" id="inputVal1" placeholder="1s">
                     <span>×</span>
                     <span id="labelMul3" style="font-weight: bold; color: var(--primary);">4</span>
                     <span>=</span>
-                </div>
-                <div>
-                    <input type="number" class="step-input-box" id="ans1" placeholder="Product total">
+                    <input type="number" class="compact-input" id="ans1" placeholder="Product">
                 </div>
             </div>
         </div>
 
         <!-- Final Answer Box -->
         <div class="final-answer-card">
-            <label for="ansFinal"><strong>Total Final Answer:</strong></label>
-            <input type="number" class="step-input-box" id="ansFinal" placeholder="Final Sum" style="width: 180px;">
+            <label for="ansFinal">Total Final Answer:</label>
+            <input type="number" class="compact-input" id="ansFinal" placeholder="Final Sum" style="width: 130px;">
         </div>
 
         <button class="action-btn" onclick="verifyBreakdownAnswer()">Verify My Calculation</button>
@@ -368,23 +365,25 @@
 
         <div class="breakdown-steps-container">
             <div class="step-card">
-                <div class="step-header">1. Making Half (Multiplier ÷ 2)</div>
-                <div>
-                    <input type="number" class="step-input-box" id="inputHalf" placeholder="Type half value">
+                <div class="step-header">1. Making Half</div>
+                <div class="step-equation-line">
+                    <span style="font-size: 0.95rem; color: var(--text-muted);">Multiplier ÷ 2 =</span>
+                    <input type="number" class="compact-input" id="inputHalf" placeholder="Half">
                 </div>
             </div>
 
             <div class="step-card">
-                <div class="step-header">2. Making Double (Number × 2)</div>
-                <div>
-                    <input type="number" class="step-input-box" id="inputDouble" placeholder="Type double value">
+                <div class="step-header">2. Making Double</div>
+                <div class="step-equation-line">
+                    <span style="font-size: 0.95rem; color: var(--text-muted);">Number × 2 =</span>
+                    <input type="number" class="compact-input" id="inputDouble" placeholder="Double">
                 </div>
             </div>
         </div>
 
         <div class="final-answer-card">
-            <label for="inputFinalAns"><strong>New Simplified Problem Product:</strong></label>
-            <input type="number" class="step-input-box" id="inputFinalAns" placeholder="Final Answer" style="width: 180px;">
+            <label for="inputFinalAns">New Simplified Product:</label>
+            <input type="number" class="compact-input" id="inputFinalAns" placeholder="Final Ans" style="width: 130px;">
         </div>
 
         <button class="action-btn" onclick="verifyDoublingHalving()">Verify Strategy & Explanation</button>
@@ -524,7 +523,7 @@
                 `3. <strong>Making Double:</strong> ${number} × 2 = ${correctDouble}<br>` +
                 `4. <strong>Final Verification:</strong> ${correctHalf} × ${correctDouble} = <strong>${correctFinal}</strong>`;
         } else {
-            output.innerHTML = `<span style="box-sizing:border-box; color:var(--error); font-weight:bold;">❌ Review your values! Correct inputs are highlighted in green.</span>`;
+            output.innerHTML = `<span style="color:var(--error); font-weight:bold;">❌ Review your values! Correct inputs are highlighted in green.</span>`;
         }
     }
 </script>
