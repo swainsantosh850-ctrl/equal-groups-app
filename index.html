@@ -237,6 +237,22 @@
             background: var(--primary-dark);
         }
 
+        .gen-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .gen-btn:hover {
+            opacity: 0.9;
+        }
+
         .output-box {
             margin-top: 20px;
             padding: 20px;
@@ -273,24 +289,20 @@
     <!-- MODULE 1: PLACE-VALUE BREAKDOWN -->
     <div id="breakdown" class="card active">
         <h2>Place-Value Breakdown Multiplication</h2>
-        <p style="margin-bottom: 20px; color: var(--text-muted);">Type your multiplication question (e.g. Multiplicand = 135, Multiplier = 4). Then complete each step — correct answers will glow green!</p>
+        <p style="margin-bottom: 20px; color: var(--text-muted);">Solve the multiplication problem step by step. Correct answers will glow green!</p>
 
-        <!-- Dynamic Question Setup -->
+        <!-- Auto-Generate Question Box -->
         <div style="background: #eef2ff; border: 2px dashed var(--primary); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-            <h3 style="color: var(--primary); margin-bottom: 12px; font-size: 1.15rem;">Set Multiplication Problem:</h3>
-            <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <div>
-                    <label for="qMultiplicand" style="font-size: 0.9rem;">Multiplicand (e.g. 135):</label>
-                    <input type="number" id="qMultiplicand" value="135" style="width: 140px;" oninput="updateProblemQuestion()">
+                    <span style="font-size: 0.95rem; color: var(--text-muted); display: block;">Current Question:</span>
+                    <span id="displayQuestionBanner" style="font-size: 1.5rem; font-weight: bold; color: var(--primary-dark);">Multiply: 135 × 4</span>
                 </div>
-                <div style="font-size: 1.5rem; font-weight: bold; margin-top: 25px;">×</div>
-                <div>
-                    <label for="qMultiplier" style="font-size: 0.9rem;">Multiplier (e.g. 4):</label>
-                    <input type="number" id="qMultiplier" value="4" style="width: 120px;" oninput="updateProblemQuestion()">
-                </div>
+                <button class="gen-btn" onclick="autoGenerateQuestion()">🎲 Auto-Generate New Question</button>
             </div>
-            <div id="displayQuestionBanner" style="margin-top: 15px; font-size: 1.3rem; font-weight: bold; color: var(--primary-dark);">
-                Multiply: 135 × 4
+            <div style="display:none;">
+                <input type="number" id="qMultiplicand" value="135">
+                <input type="number" id="qMultiplier" value="4">
             </div>
         </div>
 
@@ -402,21 +414,32 @@
         event.currentTarget.classList.add('active');
     }
 
-    function updateProblemQuestion() {
-        const mc = document.getElementById('qMultiplicand').value || '135';
-        const m = document.getElementById('qMultiplier').value || '4';
-        
-        document.getElementById('displayQuestionBanner').innerText = `Multiply: ${mc} × ${m}`;
-        document.getElementById('labelMul1').innerText = m;
-        document.getElementById('labelMul2').innerText = m;
-        document.getElementById('labelMul3').innerText = m;
+    function autoGenerateQuestion() {
+        // Random 3-digit number (e.g. 105 to 495 ending in multiples of 5 or general numbers)
+        const randomMultiplicand = Math.floor(Math.random() * 350) + 112; 
+        // Random single digit multiplier (2 to 6)
+        const randomMultiplier = Math.floor(Math.random() * 5) + 2;
+
+        document.getElementById('qMultiplicand').value = randomMultiplicand;
+        document.getElementById('qMultiplier').value = randomMultiplier;
+
+        document.getElementById('displayQuestionBanner').innerText = `Multiply: ${randomMultiplicand} × ${randomMultiplier}`;
+        document.getElementById('labelMul1').innerText = randomMultiplier;
+        document.getElementById('labelMul2').innerText = randomMultiplier;
+        document.getElementById('labelMul3').innerText = randomMultiplier;
+
+        // Clear previous input fields and outputs
+        document.querySelectorAll('.compact-input').forEach(input => {
+            input.value = '';
+            input.classList.remove('correct-field', 'error-field');
+        });
+        document.getElementById('breakdownOutput').style.display = 'none';
     }
 
     function verifyBreakdownAnswer() {
         const mc = parseInt(document.getElementById('qMultiplicand').value) || 0;
         const m = parseInt(document.getElementById('qMultiplier').value) || 0;
 
-        // Calculate correct breakdown values based on standard 3-digit place values of the entered multiplicand
         const hVal = Math.floor(mc / 100) * 100;
         const tVal = Math.floor((mc % 100) / 10) * 10;
         const oVal = mc % 10;
@@ -525,7 +548,7 @@
     }
 
     // Initialize question display on load
-    updateProblemQuestion();
+    autoGenerateQuestion();
 </script>
 
 </body>
