@@ -286,4 +286,210 @@
                 <div>
                     <div class="step-title">Step 1: Multiply Hundreds</div>
                 </div>
-                <div class="
+                <div class="equation-row-inputs">
+                    <input type="number" class="step-input" id="inputVal100" placeholder="100s val">
+                    <span>×</span>
+                    <span id="labelMul1" style="font-weight: bold; color: var(--primary);">4</span>
+                    <span>=</span>
+                    <input type="number" class="step-input" id="ans100" placeholder="Product">
+                </div>
+            </div>
+
+            <!-- Step 2: Tens -->
+            <div class="step-card">
+                <div>
+                    <div class="step-title">Step 2: Multiply Tens</div>
+                </div>
+                <div class="equation-row-inputs">
+                    <input type="number" class="step-input" id="inputVal10" placeholder="10s val">
+                    <span>×</span>
+                    <span id="labelMul2" style="font-weight: bold; color: var(--primary);">4</span>
+                    <span>=</span>
+                    <input type="number" class="step-input" id="ans10" placeholder="Product">
+                </div>
+            </div>
+
+            <!-- Step 3: Ones -->
+            <div class="step-card">
+                <div>
+                    <div class="step-title">Step 3: Multiply Ones</div>
+                </div>
+                <div class="equation-row-inputs">
+                    <input type="number" class="step-input" id="inputVal1" placeholder="1s val">
+                    <span>×</span>
+                    <span id="labelMul3" style="font-weight: bold; color: var(--primary);">4</span>
+                    <span>=</span>
+                    <input type="number" class="step-input" id="ans1" placeholder="Product">
+                </div>
+            </div>
+        </div>
+
+        <!-- Final Answer Box -->
+        <div class="final-answer-card">
+            <label for="ansFinal"><strong>Total Final Answer:</strong></label>
+            <input type="number" class="step-input" id="ansFinal" placeholder="Final Sum" style="width: 160px; border-color: var(--success);">
+        </div>
+
+        <button class="action-btn" onclick="verifyBreakdownAnswer()">Verify My Calculation</button>
+
+        <div id="breakdownOutput" class="output-box" style="display:none;"></div>
+    </div>
+
+    <!-- MODULE 2: DOUBLING & HALVING -->
+    <div id="doubling" class="card">
+        <h2>Doubling and Halving Mental Math Strategy</h2>
+        <p style="margin-bottom: 20px; color: var(--text-muted);">Pair an <strong>even multiplier</strong> with a <strong>multiple of 5</strong>. Follow the clean steps below to solve easily!</p>
+
+        <div class="row-inputs input-group">
+            <div>
+                <label for="dhEvenMultiplier">Even Multiplier:</label>
+                <input type="number" id="dhEvenMultiplier" min="2" max="8" step="2" value="4">
+            </div>
+            <div>
+                <label for="dhMultipleOf5">Number (Multiple of 5):</label>
+                <input type="number" id="dhMultipleOf5" min="5" max="995" step="5" value="35">
+            </div>
+            <div></div>
+        </div>
+
+        <div class="breakdown-steps-container">
+            <div class="step-card">
+                <div>
+                    <div class="step-title">1. Making Half</div>
+                    <div style="color: var(--text-muted); font-size: 0.95rem;">Divide the multiplier by 2</div>
+                </div>
+                <div class="step-calculation">
+                    <input type="number" class="step-input" id="inputHalf" placeholder="Half value">
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div>
+                    <div class="step-title">2. Making Double</div>
+                    <div style="color: var(--text-muted); font-size: 0.95rem;">Multiply the number by 2</div>
+                </div>
+                <div class="step-calculation">
+                    <input type="number" class="step-input" id="inputDouble" placeholder="Double value">
+                </div>
+            </div>
+        </div>
+
+        <div class="final-answer-card">
+            <label for="inputFinalAns"><strong>New Simplified Problem Product:</strong></label>
+            <input type="number" class="step-input" id="inputFinalAns" placeholder="Final Answer" style="width: 160px; border-color: var(--success);">
+        </div>
+
+        <button class="action-btn" onclick="verifyDoublingHalving()">Verify Strategy & Explanation</button>
+
+        <div id="doublingOutput" class="output-box" style="display:none;"></div>
+    </div>
+
+    <footer>
+        <p>© 2026 Chapter 9: Equal Groups | Developed by Santosh Swain, PRT, PM SHRI KV Kendriya Vidyalaya Gill Nagar, Chennai</p>
+    </footer>
+</div>
+
+<script>
+    function switchTab(tabId) {
+        document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
+    }
+
+    document.getElementById('bdMultiplier').addEventListener('input', function() {
+        const m = this.value || '4';
+        document.getElementById('labelMul1').innerText = m;
+        document.getElementById('labelMul2').innerText = m;
+        document.getElementById('labelMul3').innerText = m;
+    });
+
+    function verifyBreakdownAnswer() {
+        const m = parseInt(document.getElementById('bdMultiplier').value) || 0;
+        const c100 = parseInt(document.getElementById('count100s').value) || 0;
+        const c10 = parseInt(document.getElementById('count10s').value) || 0;
+        const c1 = parseInt(document.getElementById('count1s').value) || 0;
+
+        const userVal100 = parseInt(document.getElementById('inputVal100').value);
+        const userVal10 = parseInt(document.getElementById('inputVal10').value);
+        const userVal1 = parseInt(document.getElementById('inputVal1').value);
+
+        const userAns100 = parseInt(document.getElementById('ans100').value);
+        const userAns10 = parseInt(document.getElementById('ans10').value);
+        const userAns1 = parseInt(document.getElementById('ans1').value);
+        const userFinal = parseInt(document.getElementById('ansFinal').value);
+        
+        const output = document.getElementById('breakdownOutput');
+
+        const totalNumber = (c100 * 100) + (c10 * 10) + c1;
+        
+        const correctVal100 = c100 * 100;
+        const correctVal10 = c10 * 10;
+        const correctVal1 = c1;
+
+        const correct100 = correctVal100 * m;
+        const correct10 = correctVal10 * m;
+        const correct1 = correctVal1 * m;
+        const correctFinal = totalNumber * m;
+
+        let areValuesCorrect = (userVal100 === correctVal100 && userVal10 === correctVal10 && userVal1 === correctVal1);
+        let areProductsCorrect = (userAns100 === correct100 && userAns10 === correct10 && userAns1 === correct1 && userFinal === correctFinal);
+
+        output.style.display = 'block';
+
+        if (areValuesCorrect && areProductsCorrect) {
+            output.innerHTML = `<span style="color:var(--success); font-weight:bold;">🎉 Fantastic job! All your typed place values, partial products, and final answer are correct.</span><br><br>` +
+                `<strong>Equation:</strong> ${totalNumber} × ${m} = <strong>${correctFinal}</strong>`;
+        } else {
+            let msg = `<span style="color:var(--error); font-weight:bold;">❌ Not quite right. Check your typed values and calculations!</span><br><br>`;
+            if (!areValuesCorrect) {
+                msg += `• <strong>Place Value Check:</strong> For counts ${c100} hundreds, ${c10} tens, and ${c1} ones, you should type <strong>${correctVal100}</strong>, <strong>${correctVal10}</strong>, and <strong>${correctVal1}</strong>.<br>`;
+            }
+            if (!areProductsCorrect) {
+                msg += `• <strong>Correct Products:</strong> (${correctVal100} × ${m}) = ${correct100} | (${correctVal10} × ${m}) = ${correct10} | (${correctVal1} × ${m}) = ${correct1} (Total: ${correctFinal})<br>`;
+            }
+            output.innerHTML = msg;
+        }
+    }
+
+    function verifyDoublingHalving() {
+        const multiplier = parseInt(document.getElementById('dhEvenMultiplier').value) || 0;
+        const number = parseInt(document.getElementById('dhMultipleOf5').value) || 0;
+        const userHalf = parseInt(document.getElementById('inputHalf').value);
+        const userDouble = parseInt(document.getElementById('inputDouble').value);
+        const userFinal = parseInt(document.getElementById('inputFinalAns').value);
+        const output = document.getElementById('doublingOutput');
+
+        output.style.display = 'block';
+
+        if (multiplier % 2 !== 0) {
+            output.innerHTML = '<span style="color:var(--error);">Please select an even multiplier (e.g., 2, 4, 6, 8) for halving.</span>';
+            return;
+        }
+
+        const correctHalf = multiplier / 2;
+        const correctDouble = number * 2;
+        const correctFinal = correctHalf * correctDouble;
+
+        let isCorrect = (userHalf === correctHalf && userDouble === correctDouble && userFinal === correctFinal);
+
+        if (isCorrect) {
+            output.innerHTML = `<span style="color:var(--success); font-weight:bold;">🎉 Excellent! All steps are correct.</span><br><br>` +
+                `<strong>Step-by-Step Explanation:</strong><br>` +
+                `1. Original problem: ${multiplier} × ${number}<br>` +
+                `2. <strong>Making Half:</strong> ${multiplier} ÷ 2 = ${correctHalf}<br>` +
+                `3. <strong>Making Double:</strong> ${number} × 2 = ${correctDouble}<br>` +
+                `4. <strong>Final Verification:</strong> ${correctHalf} × ${correctDouble} = <strong>${correctFinal}</strong>`;
+        } else {
+            output.innerHTML = `<span style="color:var(--error); font-weight:bold;">❌ Not quite right. Check your values!</span><br><br>` +
+                `<strong>Correct Breakdown:</strong><br>` +
+                `• Making Half (${multiplier} ÷ 2) = <strong>${correctHalf}</strong><br>` +
+                `• Making Double (${number} × 2) = <strong>${correctDouble}</strong><br>` +
+                `• Final Answer (${correctHalf} × ${correctDouble}) = <strong>${correctFinal}</strong>`;
+        }
+    }
+</script>
+
+</body>
+</html>
