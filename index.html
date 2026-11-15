@@ -640,50 +640,54 @@
         }
     }
 
-    // --- MODULE 3: HOTS WORD PROBLEMS USING STUDENT NAMES ---
-    let currentHOTS = null;
+    // --- MODULE 3: HOTS WORD PROBLEMS (BULLETPROOF GENERATOR) ---
+    let currentHOTS = { text: "", ans: 0 };
 
     function generateHOTSQuestion() {
         const name1 = studentNames[Math.floor(Math.random() * studentNames.length)];
         let name2 = studentNames[Math.floor(Math.random() * studentNames.length)];
-        while(name2 === name1) { name2 = studentNames[Math.floor(Math.random() * studentNames.length)]; }
+        while(name2 === name1) { 
+            name2 = studentNames[Math.floor(Math.random() * studentNames.length)]; 
+        }
 
-        const templates = [
-            {
-                q: `${name1} has ${Math.floor(Math.random() * 3) + 3} equal boxes of pencils, and each box contains ${Math.floor(Math.random() * 10) + 15} pencils. If ${name2} gives them ${Math.floor(Math.random() * 5) + 2} more pencils, how many pencils do they have in total?`,
-                calc: (b, p, extra) => (b * p) + extra
-            },
-            {
-                q: `${name1} and ${name2} are organizing equal groups of books for the library. They arrange ${Math.floor(Math.random() * 4) + 4} shelves, with ${Math.floor(Math.random() * 10) + 20} books on each shelf. If ${Math.floor(Math.random() * 5) + 5} books are damaged and taken away, how many good books remain?`,
-                calc: (s, r, dam) => (s * r) - dam
-            },
-            {
-                q: `During a school activity, ${name1} distributes ${Math.floor(Math.random() * 3) + 3} packets of crayons to students. Each packet has ${Math.floor(Math.random() * 6) + 12} crayons. ${name2} brings ${Math.floor(Math.random() * 4) + 6} extra crayons. What is the total number of crayons?`,
-                calc: (pk, cr, ex) => (pk * cr) + ex
-            }
-        ];
+        const boxes = Math.floor(Math.random() * 3) + 3; // 3 to 5
+        const perBox = Math.floor(Math.random() * 10) + 15; // 15 to 24
+        const extra = Math.floor(Math.random() * 5) + 2; // 2 to 6
 
-        const template = templates[Math.floor(Math.random() * templates.length)];
-        let p1 = Math.floor(Math.random() * 3) + 3;
-        let p2 = Math.floor(Math.random() * 10) + 20;
-        let p3 = Math.floor(Math.random() * 4) + 2;
+        const questionType = Math.floor(Math.random() * 3);
+        let text = "";
+        let ans = 0;
 
-        currentHOTS = {
-            text: template.q(p1, p2, p3),
-            ans: template.calc(p1, p2, p3)
-        };
+        if (questionType === 0) {
+            text = `${name1} has ${boxes} equal boxes of pencils, and each box contains ${perBox} pencils. If ${name2} gives them ${extra} more pencils, how many pencils do they have in total?`;
+            ans = (boxes * perBox) + extra;
+        } else if (questionType === 1) {
+            const shelves = boxes;
+            const booksPerShelf = perBox;
+            const damaged = extra;
+            text = `${name1} and ${name2} are organizing equal groups of books for the library. They arrange ${shelves} shelves, with ${booksPerShelf} books on each shelf. If ${damaged} books are damaged and taken away, how many good books remain?`;
+            ans = (shelves * booksPerShelf) - damaged;
+        } else {
+            const packets = boxes;
+            const crayonsPerPacket = perBox;
+            const extraCrayons = extra;
+            text = `During a school activity, ${name1} distributes ${packets} packets of crayons to students. Each packet has ${crayonsPerPacket} crayons. ${name2} brings ${extraCrayons} extra crayons. What is the total number of crayons?`;
+            ans = (packets * crayonsPerPacket) + extraCrayons;
+        }
+
+        currentHOTS = { text: text, ans: ans };
 
         const textEl = document.getElementById('hotsQuestionText');
-        if(textEl) {
+        if (textEl) {
             textEl.innerText = currentHOTS.text;
         }
         const ansEl = document.getElementById('hotsUserAnswer');
-        if(ansEl) {
+        if (ansEl) {
             ansEl.value = '';
             ansEl.classList.remove('correct-field', 'error-field');
         }
         const outEl = document.getElementById('hotsOutput');
-        if(outEl) {
+        if (outEl) {
             outEl.style.display = 'none';
         }
     }
@@ -781,7 +785,7 @@
         renderMCQ();
     }
 
-    // Execute generation immediately when page script loads
+    // Initialize all modules safely on window load
     window.onload = function() {
         autoGenerateQuestion();
         generateHOTSQuestion();
