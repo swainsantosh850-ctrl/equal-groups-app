@@ -60,7 +60,7 @@
 
         .nav-tabs {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 20px;
             flex-wrap: wrap;
             justify-content: center;
@@ -69,11 +69,11 @@
         .tab-btn {
             background: var(--card-bg);
             border: 2px solid var(--border);
-            padding: 10px 18px;
-            font-size: 0.95rem;
+            padding: 12px 22px;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--text-muted);
-            border-radius: 10px;
+            border-radius: 12px;
             cursor: pointer;
             transition: all 0.2s ease;
         }
@@ -88,7 +88,7 @@
         .card {
             background: var(--card-bg);
             border-radius: 16px;
-            padding: 25px;
+            padding: 30px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
             border: 1px solid var(--border);
             margin-bottom: 20px;
@@ -108,14 +108,15 @@
         }
 
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
             font-weight: 600;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
             color: var(--text-main);
+            font-size: 1.05rem;
         }
 
         input[type="number"] {
@@ -123,9 +124,10 @@
             padding: 12px;
             border: 2px solid var(--border);
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 1.1rem;
             outline: none;
             transition: border-color 0.2s;
+            background: #fff;
         }
 
         input[type="number"]:focus {
@@ -135,49 +137,88 @@
         .row-inputs {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        /* Clean Card-Style Breakdown Rows instead of confusing brackets */
+        .breakdown-steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .step-card {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            align-items: center;
             gap: 15px;
         }
 
-        .equation-box {
-            background: #f8fafc;
-            border: 2px solid var(--border);
-            padding: 15px;
-            border-radius: 10px;
+        @media(max-width: 700px) {
+            .step-card {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .step-calculation {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .step-input {
+            width: 130px;
+            padding: 10px;
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            background: white;
+        }
+
+        .final-answer-card {
+            background: linear-gradient(135deg, #e0f2fe, #f0fdf4);
+            border: 2px solid var(--accent);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-top: 15px;
         }
 
-        .eq-row {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            font-size: 1.05rem;
-            font-weight: 600;
-        }
-
-        .eq-input {
-            width: 90px;
-            padding: 8px;
-            border: 2px solid var(--primary);
-            border-radius: 6px;
-            text-align: center;
-            font-size: 1rem;
-            font-weight: bold;
+        .final-answer-card label {
+            margin: 0;
+            font-size: 1.2rem;
+            color: var(--primary-dark);
         }
 
         button.action-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px 20px;
-            font-size: 1rem;
+            padding: 14px 20px;
+            font-size: 1.1rem;
             font-weight: 600;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             width: 100%;
             transition: background 0.2s;
-            margin-top: 10px;
+            margin-top: 20px;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
         }
 
         button.action-btn:hover {
@@ -188,9 +229,9 @@
             margin-top: 20px;
             padding: 20px;
             background: #f1f5f9;
-            border-radius: 8px;
-            border-left: 4px solid var(--accent);
-            font-size: 1.05rem;
+            border-radius: 10px;
+            border-left: 5px solid var(--accent);
+            font-size: 1.1rem;
         }
 
         footer {
@@ -219,69 +260,69 @@
 
     <!-- MODULE 1: PLACE-VALUE BREAKDOWN -->
     <div id="breakdown" class="card active">
-        <h2>Place-Value Breakdown Multiplication (Up to 3 Digits)</h2>
-        <p style="margin-bottom: 15px; color: var(--text-muted);">Enter the Multiplier and build the 3-digit Multiplicand by entering the count of 100s, 10s, and 1s. Then fill in the total values and partial product equations!</p>
+        <h2>Place-Value Breakdown Multiplication</h2>
+        <p style="margin-bottom: 20px; color: var(--text-muted);">Set your multiplier and enter your 3-digit number breakdown. Then multiply each place value step-by-step!</p>
 
-        <div class="input-group">
-            <label for="bdMultiplier">Multiplier (e.g., 3, 4, 5):</label>
-            <input type="number" id="bdMultiplier" min="1" max="9" value="5" oninput="updateMultiplierDisplay()">
+        <div class="input-group" style="max-width: 300px;">
+            <label for="bdMultiplier">Enter Multiplier:</label>
+            <input type="number" id="bdMultiplier" min="1" max="9" value="4" oninput="updateBreakdownLabels()">
         </div>
 
-        <label>Build the Multiplicand (Enter counts for 100s, 10s, 1s):</label>
+        <label>Build Your 3-Digit Number (Enter Count of Blocks):</label>
         <div class="row-inputs input-group">
             <div>
-                <label style="font-size:0.85rem; color:var(--text-muted);">Number of 100s</label>
-                <input type="number" id="count100s" min="0" max="9" value="1">
+                <label style="font-size:0.9rem; color:var(--text-muted);">Hundreds (100s)</label>
+                <input type="number" id="count100s" min="0" max="9" value="1" oninput="updateBreakdownLabels()">
             </div>
             <div>
-                <label style="font-size:0.85rem; color:var(--text-muted);">Number of 10s</label>
-                <input type="number" id="count10s" min="0" max="9" value="3">
+                <label style="font-size:0.9rem; color:var(--text-muted);">Tens (10s)</label>
+                <input type="number" id="count10s" min="0" max="9" value="3" oninput="updateBreakdownLabels()">
             </div>
             <div>
-                <label style="font-size:0.85rem; color:var(--text-muted);">Number of 1s</label>
-                <input type="number" id="count1s" min="0" max="9" value="5">
+                <label style="font-size:0.9rem; color:var(--text-muted);">Ones (1s)</label>
+                <input type="number" id="count1s" min="0" max="9" value="5" oninput="updateBreakdownLabels()">
             </div>
         </div>
 
-        <div class="equation-box">
-            <p style="margin-bottom: 12px; font-weight: bold; color: var(--primary);">Type your total place values, partial products, and final answer:</p>
-            
-            <!-- Row for 100s -->
-            <div class="eq-row">
-                <span>{ [</span>
-                <input type="number" class="eq-input" id="val100" placeholder="100s val">
-                <span>×</span>
-                <span class="displayMultiplier">5</span>
-                <span>] =</span>
-                <input type="number" class="eq-input" id="ans100" placeholder="Product">
-                <span>}</span>
-                <span style="font-size: 1.2rem; font-weight: bold;">+</span>
+        <div class="breakdown-steps-container">
+            <!-- Step 1: Hundreds -->
+            <div class="step-card">
+                <div>
+                    <div class="step-title">Step 1: Multiply Hundreds</div>
+                    <div id="desc100" style="color: var(--text-muted); font-size: 0.95rem; margin-top: 4px;">100 × 4 = ?</div>
+                </div>
+                <div class="step-calculation">
+                    <input type="number" class="step-input" id="ans100" placeholder="Answer">
+                </div>
             </div>
 
-            <!-- Row for 10s -->
-            <div class="eq-row">
-                <span>{ [</span>
-                <input type="number" class="eq-input" id="val10" placeholder="10s val">
-                <span>×</span>
-                <span class="displayMultiplier">5</span>
-                <span>] =</span>
-                <input type="number" class="eq-input" id="ans10" placeholder="Product">
-                <span>}</span>
-                <span style="font-size: 1.2rem; font-weight: bold;">+</span>
+            <!-- Step 2: Tens -->
+            <div class="step-card">
+                <div>
+                    <div class="step-title">Step 2: Multiply Tens</div>
+                    <div id="desc10" style="color: var(--text-muted); font-size: 0.95rem; margin-top: 4px;">30 × 4 = ?</div>
+                </div>
+                <div class="step-calculation">
+                    <input type="number" class="step-input" id="ans10" placeholder="Answer">
+                </div>
             </div>
 
-            <!-- Row for 1s -->
-            <div class="eq-row">
-                <span>{ [</span>
-                <input type="number" class="eq-input" id="val1" placeholder="1s val">
-                <span>×</span>
-                <span class="displayMultiplier">5</span>
-                <span>] =</span>
-                <input type="number" class="eq-input" id="ans1" placeholder="Product">
-                <span>}</span>
-                <span style="font-size: 1.2rem; font-weight: bold;">=</span>
-                <input type="number" class="eq-input" id="ansFinal" placeholder="Final Ans" style="width: 120px;">
+            <!-- Step 3: Ones -->
+            <div class="step-card">
+                <div>
+                    <div class="step-title">Step 3: Multiply Ones</div>
+                    <div id="desc1" style="color: var(--text-muted); font-size: 0.95rem; margin-top: 4px;">5 × 4 = ?</div>
+                </div>
+                <div class="step-calculation">
+                    <input type="number" class="step-input" id="ans1" placeholder="Answer">
+                </div>
             </div>
+        </div>
+
+        <!-- Final Answer Box -->
+        <div class="final-answer-card">
+            <label for="ansFinal"><strong>Total Final Answer:</strong></label>
+            <input type="number" class="step-input" id="ansFinal" placeholder="Final Sum" style="width: 160px; border-color: var(--success);">
         </div>
 
         <button class="action-btn" onclick="verifyBreakdownAnswer()">Verify My Calculation</button>
@@ -292,31 +333,45 @@
     <!-- MODULE 2: DOUBLING & HALVING -->
     <div id="doubling" class="card">
         <h2>Doubling and Halving Mental Math Strategy</h2>
-        <p style="margin-bottom: 15px; color: var(--text-muted);">Pair an <strong>even multiplier</strong> with a <strong>multiple of 5</strong> (up to 3 digits). Type your half and double values to solve!</p>
+        <p style="margin-bottom: 20px; color: var(--text-muted);">Pair an <strong>even multiplier</strong> with a <strong>multiple of 5</strong>. Follow the clean steps below to solve easily!</p>
 
-        <div class="input-group">
-            <label for="dhEvenMultiplier">Even Multiplier (e.g., 4, 6, 8):</label>
-            <input type="number" id="dhEvenMultiplier" min="2" max="8" step="2" value="4">
+        <div class="row-inputs input-group">
+            <div>
+                <label for="dhEvenMultiplier">Even Multiplier:</label>
+                <input type="number" id="dhEvenMultiplier" min="2" max="8" step="2" value="4">
+            </div>
+            <div>
+                <label for="dhMultipleOf5">Number (Multiple of 5):</label>
+                <input type="number" id="dhMultipleOf5" min="5" max="995" step="5" value="35">
+            </div>
+            <div></div>
         </div>
 
-        <div class="input-group">
-            <label for="dhMultipleOf5">Number (Multiple of 5, up to 3 digits, e.g., 35, 125, 250):</label>
-            <input type="number" id="dhMultipleOf5" min="5" max="995" step="5" value="35">
+        <div class="breakdown-steps-container">
+            <div class="step-card">
+                <div>
+                    <div class="step-title">1. Making Half</div>
+                    <div style="color: var(--text-muted); font-size: 0.95rem;">Divide the multiplier by 2</div>
+                </div>
+                <div class="step-calculation">
+                    <input type="number" class="step-input" id="inputHalf" placeholder="Half value">
+                </div>
+            </div>
+
+            <div class="step-card">
+                <div>
+                    <div class="step-title">2. Making Double</div>
+                    <div style="color: var(--text-muted); font-size: 0.95rem;">Multiply the number by 2</div>
+                </div>
+                <div class="step-calculation">
+                    <input type="number" class="step-input" id="inputDouble" placeholder="Double value">
+                </div>
+            </div>
         </div>
 
-        <div class="row-inputs input-group" style="margin-top: 15px;">
-            <div>
-                <label for="inputHalf">Making Half (Multiplier ÷ 2):</label>
-                <input type="number" id="inputHalf" placeholder="Type half">
-            </div>
-            <div>
-                <label for="inputDouble">Making Double (Number × 2):</label>
-                <input type="number" id="inputDouble" placeholder="Type double">
-            </div>
-            <div>
-                <label for="inputFinalAns">Final Answer:</label>
-                <input type="number" id="inputFinalAns" placeholder="Type final ans">
-            </div>
+        <div class="final-answer-card">
+            <label for="inputFinalAns"><strong>New Simplified Problem Product:</strong></label>
+            <input type="number" class="step-input" id="inputFinalAns" placeholder="Final Answer" style="width: 160px; border-color: var(--success);">
         </div>
 
         <button class="action-btn" onclick="verifyDoublingHalving()">Verify Strategy & Explanation</button>
@@ -338,11 +393,19 @@
         event.currentTarget.classList.add('active');
     }
 
-    function updateMultiplierDisplay() {
-        const m = document.getElementById('bdMultiplier').value || '5';
-        document.querySelectorAll('.displayMultiplier').forEach(el => {
-            el.innerText = m;
-        });
+    function updateBreakdownLabels() {
+        const m = document.getElementById('bdMultiplier').value || '4';
+        const c100 = document.getElementById('count100s').value || '0';
+        const c10 = document.getElementById('count10s').value || '0';
+        const c1 = document.getElementById('count1s').value || '0';
+
+        const val100 = c100 * 100;
+        const val10 = c10 * 10;
+        const val1 = parseInt(c1) || 0;
+
+        document.getElementById('desc100').innerText = `${val100} × ${m} = ?`;
+        document.getElementById('desc10').innerText = `${val10} × ${m} = ?`;
+        document.getElementById('desc1').innerText = `${val1} × ${m} = ?`;
     }
 
     function verifyBreakdownAnswer() {
@@ -351,52 +414,74 @@
         const c10 = parseInt(document.getElementById('count10s').value) || 0;
         const c1 = parseInt(document.getElementById('count1s').value) || 0;
 
-        // Student typed values for place values
-        const userVal100 = parseInt(document.getElementById('val100').value);
-        const userVal10 = parseInt(document.getElementById('val10').value);
-        const userVal1 = parseInt(document.getElementById('val1').value);
-
-        // Student typed partial products & final answer
         const userAns100 = parseInt(document.getElementById('ans100').value);
         const userAns10 = parseInt(document.getElementById('ans10').value);
         const userAns1 = parseInt(document.getElementById('ans1').value);
         const userFinal = parseInt(document.getElementById('ansFinal').value);
-        
         const output = document.getElementById('breakdownOutput');
 
         const totalNumber = (c100 * 100) + (c10 * 10) + c1;
-        
-        const correctVal100 = c100 * 100;
-        const correctVal10 = c10 * 10;
-        const correctVal1 = c1;
-
-        const correct100 = correctVal100 * m;
-        const correct10 = correctVal10 * m;
-        const correct1 = correctVal1 * m;
+        const correct100 = (c100 * 100) * m;
+        const correct10 = (c10 * 10) * m;
+        const correct1 = c1 * m;
         const correctFinal = totalNumber * m;
 
-        let areValuesCorrect = (userVal100 === correctVal100 && userVal10 === correctVal10 && userVal1 === correctVal1);
-        let areProductsCorrect = (userAns100 === correct100 && userAns10 === correct10 && userAns1 === correct1 && userFinal === correctFinal);
+        let isCorrect = (userAns100 === correct100 && userAns10 === correct10 && userAns1 === correct1 && userFinal === correctFinal);
 
         output.style.display = 'block';
 
-        if (areValuesCorrect && areProductsCorrect) {
-            output.innerHTML = `<span style="color:var(--success); font-weight:bold;">🎉 Fantastic job! Your place values, partial products, and final answer are all correct.</span><br><br>` +
-                `<strong>Equation Solved:</strong> ${totalNumber} × ${m} = <strong>${correctFinal}</strong>`;
+        if (isCorrect) {
+            output.innerHTML = `<span style="color:var(--success); font-weight:bold;">🎉 Fantastic job! All your partial products and final answer are correct.</span><br><br>` +
+                `<strong>Equation:</strong> ${totalNumber} × ${m} = <strong>${correctFinal}</strong>`;
         } else {
-            let msg = `<span style="color:var(--error); font-weight:bold;">❌ Not quite right. Check your values and calculations!</span><br><br>`;
-            if (!areValuesCorrect) {
-                msg += `• <strong>Hint on Place Values:</strong> Based on your counts (${c100} hundreds, ${c10} tens, ${c1} ones), the values should be <strong>${correctVal100}</strong>, <strong>${correctVal10}</strong>, and <strong>${correctVal1}</strong>.<br>`;
-            }
-            if (!areProductsCorrect) {
-                msg += `• <strong>Correct Products:</strong> (${correctVal100} × ${m}) = ${correct100} | (${correctVal10} × ${m}) = ${correct10} | (${correctVal1} × ${m}) = ${correct1} (Total: ${correctFinal})<br>`;
-            }
-            output.innerHTML = msg;
+            output.innerHTML = `<span style="color:var(--error); font-weight:bold;">❌ Not quite right. Check your calculations!</span><br><br>` +
+                `<strong>Correct Breakdown for ${totalNumber} × ${m}:</strong><br>` +
+                `• Hundreds (${c100 * 100} × ${m}) = <strong>${correct100}</strong><br>` +
+                `• Tens (${c10 * 10} × ${m}) = <strong>${correct10}</strong><br>` +
+                `• Ones (${c1} × ${m}) = <strong>${correct1}</strong><br>` +
+                `• Final Sum = <strong>${correctFinal}</strong>`;
         }
     }
 
-    // Initialize multiplier display on load
-    updateMultiplierDisplay();
+    function verifyDoublingHalving() {
+        const multiplier = parseInt(document.getElementById('dhEvenMultiplier').value) || 0;
+        const number = parseInt(document.getElementById('dhMultipleOf5').value) || 0;
+        const userHalf = parseInt(document.getElementById('inputHalf').value);
+        const userDouble = parseInt(document.getElementById('inputDouble').value);
+        const userFinal = parseInt(document.getElementById('inputFinalAns').value);
+        const output = document.getElementById('doublingOutput');
+
+        output.style.display = 'block';
+
+        if (multiplier % 2 !== 0) {
+            output.innerHTML = '<span style="color:var(--error);">Please select an even multiplier (e.g., 2, 4, 6, 8) for halving.</span>';
+            return;
+        }
+
+        const correctHalf = multiplier / 2;
+        const correctDouble = number * 2;
+        const correctFinal = correctHalf * correctDouble;
+
+        let isCorrect = (userHalf === correctHalf && userDouble === correctDouble && userFinal === correctFinal);
+
+        if (isCorrect) {
+            output.innerHTML = `<span style="color:var(--success); font-weight:bold;">🎉 Excellent! All steps are correct.</span><br><br>` +
+                `<strong>Step-by-Step Explanation:</strong><br>` +
+                `1. Original problem: ${multiplier} × ${number}<br>` +
+                `2. <strong>Making Half:</strong> ${multiplier} ÷ 2 = ${correctHalf}<br>` +
+                `3. <strong>Making Double:</strong> ${number} × 2 = ${correctDouble}<br>` +
+                `4. <strong>Final Verification:</strong> ${correctHalf} × ${correctDouble} = <strong>${correctFinal}</strong>`;
+        } else {
+            output.innerHTML = `<span style="color:var(--error); font-weight:bold;">❌ Not quite right. Check your values!</span><br><br>` +
+                `<strong>Correct Breakdown:</strong><br>` +
+                `• Making Half (${multiplier} ÷ 2) = <strong>${correctHalf}</strong><br>` +
+                `• Making Double (${number} × 2) = <strong>${correctDouble}</strong><br>` +
+                `• Final Answer (${correctHalf} × ${correctDouble}) = <strong>${correctFinal}</strong>`;
+        }
+    }
+
+    // Initialize labels on load
+    updateBreakdownLabels();
 </script>
 
 </body>
