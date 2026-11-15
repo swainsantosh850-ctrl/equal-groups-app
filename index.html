@@ -451,9 +451,8 @@
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <div>
                     <span style="font-size: 0.95rem; color: var(--text-muted); display: block;">HOTS Challenge:</span>
-                    <p id="hotsQuestionText" style="font-size: 1.15rem; font-weight: 600; color: var(--primary-dark); margin-top: 5px;">Adhya has 4 equal boxes of pencils, and each box contains 18 pencils. If Aneesh gives them 3 more pencils, how many pencils do they have in total?</p>
+                    <p id="hotsQuestionText" style="font-size: 1.15rem; font-weight: 600; color: var(--primary-dark); margin-top: 5px;">Loading question...</p>
                 </div>
-                <!-- FIXED: Added direct onclick trigger -->
                 <button class="gen-btn" onclick="generateHOTSQuestion()">🎲 New HOTS Problem</button>
             </div>
         </div>
@@ -479,7 +478,7 @@
     </div>
 
     <footer>
-        <p>© 2026 Chapter 9: Equal Groups | PM SHRI KV Kendriya Vidyalaya Gill Nagar, Chennai</p>
+        <p>© 2026 Chapter 9: Equal Groups | PM SHRI KV Gill Nagar, Chennai</p>
     </footer>
 </div>
 
@@ -642,10 +641,7 @@
     }
 
     // --- MODULE 3: HOTS WORD PROBLEMS USING STUDENT NAMES ---
-    let currentHOTS = {
-        text: "Adhya has 4 equal boxes of pencils, and each box contains 18 pencils. If Aneesh gives them 3 more pencils, how many pencils do they have in total?",
-        ans: (4 * 18) + 3
-    };
+    let currentHOTS = null;
 
     function generateHOTSQuestion() {
         const name1 = studentNames[Math.floor(Math.random() * studentNames.length)];
@@ -677,10 +673,19 @@
             ans: template.calc(p1, p2, p3)
         };
 
-        document.getElementById('hotsQuestionText').innerText = currentHOTS.text;
-        document.getElementById('hotsUserAnswer').value = '';
-        document.getElementById('hotsUserAnswer').classList.remove('correct-field', 'error-field');
-        document.getElementById('hotsOutput').style.display = 'none';
+        const textEl = document.getElementById('hotsQuestionText');
+        if(textEl) {
+            textEl.innerText = currentHOTS.text;
+        }
+        const ansEl = document.getElementById('hotsUserAnswer');
+        if(ansEl) {
+            ansEl.value = '';
+            ansEl.classList.remove('correct-field', 'error-field');
+        }
+        const outEl = document.getElementById('hotsOutput');
+        if(outEl) {
+            outEl.style.display = 'none';
+        }
     }
 
     function verifyHOTSAnswer() {
@@ -776,9 +781,12 @@
         renderMCQ();
     }
 
-    // Initialize generators on load
-    autoGenerateQuestion();
-    renderMCQ();
+    // Execute generation immediately when page script loads
+    window.onload = function() {
+        autoGenerateQuestion();
+        generateHOTSQuestion();
+        renderMCQ();
+    };
 </script>
 
 </body>
