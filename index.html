@@ -503,9 +503,6 @@
         document.getElementById(tabId).classList.add('active');
         event.currentTarget.classList.add('active');
 
-        if(tabId === 'hots' && !currentHOTS) {
-            generateHOTSQuestion();
-        }
         if(tabId === 'mcqs' && currentMCQIndex === 0 && document.getElementById('mcqContainer').innerHTML === '') {
             renderMCQ();
         }
@@ -774,7 +771,9 @@
         renderMCQ();
     }
 
+    // Initialize generators on load
     autoGenerateQuestion();
+    generateHOTSQuestion();
 </script>
 
 </body>
