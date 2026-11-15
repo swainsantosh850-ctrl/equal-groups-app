@@ -60,7 +60,7 @@
 
         .nav-tabs {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             margin-bottom: 20px;
             flex-wrap: wrap;
             justify-content: center;
@@ -69,8 +69,8 @@
         .tab-btn {
             background: var(--card-bg);
             border: 2px solid var(--border);
-            padding: 12px 22px;
-            font-size: 1rem;
+            padding: 10px 16px;
+            font-size: 0.95rem;
             font-weight: 600;
             color: var(--text-muted);
             border-radius: 12px;
@@ -133,7 +133,6 @@
             border-color: var(--primary);
         }
 
-        /* Dynamic validation input states */
         input.correct-field {
             border-color: var(--success) !important;
             background-color: #f0fdf4 !important;
@@ -262,6 +261,52 @@
             font-size: 1.1rem;
         }
 
+        /* MCQ Styles */
+        .mcq-question-box {
+            background: #f8fafc;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .mcq-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .mcq-option-btn {
+            background: white;
+            border: 2px solid var(--border);
+            padding: 12px 16px;
+            text-align: left;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+
+        .mcq-option-btn:hover {
+            border-color: var(--primary);
+            background: #eef2ff;
+        }
+
+        .mcq-option-btn.correct {
+            background: #f0fdf4 !important;
+            border-color: var(--success) !important;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        .mcq-option-btn.incorrect {
+            background: #fef2f2 !important;
+            border-color: var(--error) !important;
+            color: #991b1b;
+        }
+
         footer {
             text-align: center;
             margin-top: 30px;
@@ -278,12 +323,14 @@
     <header>
         <h1>Chapter 9: Equal Groups</h1>
         <p>Class 4 Mathematics | Interactive Learning Suite</p>
-        <p style="font-size: 0.85rem; margin-top: 5px; opacity: 0.9;">Created by Santosh Swain, PRT | PM SHRI KV Gill Nagar</p>
+        <p style="font-size: 0.85rem; margin-top: 5px; opacity: 0.9;">PM SHRI KV Gill Nagar, Chennai</p>
     </header>
 
     <div class="nav-tabs">
         <button class="tab-btn active" onclick="switchTab('breakdown')">1. Place-Value Breakdown</button>
-        <button class="tab-btn" onclick="switchTab('doubling')">2. Doubling & Halving Strategy</button>
+        <button class="tab-btn" onclick="switchTab('doubling')">2. Doubling & Halving</button>
+        <button class="tab-btn" onclick="switchTab('hots')">3. HOTS Word Problems</button>
+        <button class="tab-btn" onclick="switchTab('mcqs')">4. Interactive MCQs</button>
     </div>
 
     <!-- MODULE 1: PLACE-VALUE BREAKDOWN -->
@@ -291,7 +338,6 @@
         <h2>Place-Value Breakdown Multiplication</h2>
         <p style="margin-bottom: 20px; color: var(--text-muted);">Solve the multiplication problem step by step. Correct answers will glow green!</p>
 
-        <!-- Auto-Generate Question Box -->
         <div style="background: #eef2ff; border: 2px dashed var(--primary); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
             <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
                 <div>
@@ -307,7 +353,6 @@
         </div>
 
         <div class="breakdown-steps-container">
-            <!-- Step 1: Multiply Hundreds -->
             <div class="step-card">
                 <div class="step-header">Step 1: Hundreds</div>
                 <div class="step-equation-line">
@@ -319,7 +364,6 @@
                 </div>
             </div>
 
-            <!-- Step 2: Multiply Tens -->
             <div class="step-card">
                 <div class="step-header">Step 2: Tens</div>
                 <div class="step-equation-line">
@@ -331,7 +375,6 @@
                 </div>
             </div>
 
-            <!-- Step 3: Multiply Ones -->
             <div class="step-card">
                 <div class="step-header">Step 3: Ones</div>
                 <div class="step-equation-line">
@@ -344,7 +387,6 @@
             </div>
         </div>
 
-        <!-- Final Answer Box -->
         <div class="final-answer-card">
             <label for="ansFinal">Total Final Answer:</label>
             <input type="number" class="compact-input" id="ansFinal" placeholder="Final Sum" style="width: 130px;">
@@ -400,24 +442,78 @@
         <div id="doublingOutput" class="output-box" style="display:none;"></div>
     </div>
 
+    <!-- MODULE 3: HOTS WORD PROBLEMS -->
+    <div id="hots" class="card">
+        <h2>Higher Order Thinking Skills (HOTS) Word Problems</h2>
+        <p style="margin-bottom: 20px; color: var(--text-muted);">Solve challenging real-life equal group scenarios featuring your classmates!</p>
+
+        <div style="background: #eef2ff; border: 2px dashed var(--primary); border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <div>
+                    <span style="font-size: 0.95rem; color: var(--text-muted); display: block;">HOTS Challenge:</span>
+                    <p id="hotsQuestionText" style="font-size: 1.15rem; font-weight: 600; color: var(--primary-dark); margin-top: 5px;">Loading question...</p>
+                </div>
+                <button class="gen-btn" onclick="generateHOTSQuestion()">🎲 New HOTS Problem</button>
+            </div>
+        </div>
+
+        <div class="final-answer-card">
+            <label for="hotsUserAnswer">Your Final Answer:</label>
+            <input type="number" class="compact-input" id="hotsUserAnswer" placeholder="Answer" style="width: 150px;">
+        </div>
+
+        <button class="action-btn" onclick="verifyHOTSAnswer()">Verify HOTS Answer</button>
+
+        <div id="hotsOutput" class="output-box" style="display:none;"></div>
+    </div>
+
+    <!-- MODULE 4: INTERACTIVE MCQS -->
+    <div id="mcqs" class="card">
+        <h2>Interactive Multiple Choice Questions (MCQs)</h2>
+        <p style="margin-bottom: 20px; color: var(--text-muted);">Test your conceptual understanding of Equal Groups and Multiplication!</p>
+
+        <div id="mcqContainer"></div>
+
+        <button class="action-btn" onclick="loadNextMCQ()" style="background: var(--accent); margin-top: 15px;">Next MCQ Question ➔</button>
+    </div>
+
     <footer>
-        <p>© 2026 Chapter 9: Equal Groups | Developed by Santosh Swain, PRT, PM SHRI KV Kendriya Vidyalaya Gill Nagar, Chennai</p>
+        <p>© 2026 Chapter 9: Equal Groups | PM SHRI KV Kendriya Vidyalaya Gill Nagar, Chennai</p>
     </footer>
 </div>
 
 <script>
+    const studentNames = [
+        "Adhya", "Aneesh", "Aditya Raj Madhukar", "Gayatri Nayak", "Dhwani S", 
+        "Ditya Shree M.V", "Jiya", "Shri H", "Kalpalathika R", "Karthika", 
+        "Lekshana Sri A A", "Nidharsana", "Nidhira Hareesh M", "Parameshwari R", 
+        "Rakshita S", "Sai Sahashra J.", "Shalin Mithuna E", "Shasvita", 
+        "Sreesamiksha M", "Tharunikaa", "Yuktha", "Ayushman Sethy T", 
+        "Bharath M.K", "Dheeran J.", "Agasthya Arav", "Joel K Lenthang M", 
+        "Karthikeyan", "Mehith Sahoo", "A Mugil Arasan", "Niranjan N M", 
+        "Pratheeban", "Prinss.", "Sabarish D", "Sai Vishnu K", "Sailesh", 
+        "Saiyam Karna", "Sarve Karnam", "Tamizhiniya Na.", "V Tarun Tovi V.", 
+        "Thirukumaran V.", "Vishwa V.", "Yugesh"
+    ];
+
     function switchTab(tabId) {
         document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         
         document.getElementById(tabId).classList.add('active');
         event.currentTarget.classList.add('active');
+
+        if(tabId === 'hots' && !currentHOTS) {
+            generateHOTSQuestion();
+        }
+        if(tabId === 'mcqs' && currentMCQIndex === 0 && document.getElementById('mcqContainer').innerHTML === '') {
+            renderMCQ();
+        }
     }
 
+    // --- MODULE 1: BREAKDOWN ---
     function autoGenerateQuestion() {
-        // Random 3-digit number (e.g. 105 to 495 ending in multiples of 5 or general numbers)
         const randomMultiplicand = Math.floor(Math.random() * 350) + 112; 
-        // Random single digit multiplier (2 to 6)
         const randomMultiplier = Math.floor(Math.random() * 5) + 2;
 
         document.getElementById('qMultiplicand').value = randomMultiplicand;
@@ -428,7 +524,6 @@
         document.getElementById('labelMul2').innerText = randomMultiplier;
         document.getElementById('labelMul3').innerText = randomMultiplier;
 
-        // Clear previous input fields and outputs
         document.querySelectorAll('.compact-input').forEach(input => {
             input.value = '';
             input.classList.remove('correct-field', 'error-field');
@@ -498,6 +593,7 @@
         }
     }
 
+    // --- MODULE 2: DOUBLING & HALVING ---
     function verifyDoublingHalving() {
         const multiplier = parseInt(document.getElementById('dhEvenMultiplier').value) || 0;
         const number = parseInt(document.getElementById('dhMultipleOf5').value) || 0;
@@ -547,7 +643,137 @@
         }
     }
 
-    // Initialize question display on load
+    // --- MODULE 3: HOTS WORD PROBLEMS USING STUDENT NAMES ---
+    let currentHOTS = null;
+    function generateHOTSQuestion() {
+        const name1 = studentNames[Math.floor(Math.random() * studentNames.length)];
+        let name2 = studentNames[Math.floor(Math.random() * studentNames.length)];
+        while(name2 === name1) { name2 = studentNames[Math.floor(Math.random() * studentNames.length)]; }
+
+        const templates = [
+            {
+                q: `${name1} has ${Math.floor(Math.random() * 3) + 3} equal boxes of pencils, and each box contains ${Math.floor(Math.random() * 10) + 15} pencils. If ${name2} gives them ${Math.floor(Math.random() * 5) + 2} more pencils, how many pencils do they have in total?`,
+                calc: (b, p, extra) => (b * p) + extra
+            },
+            {
+                q: `${name1} and ${name2} are organizing equal groups of books for the library. They arrange ${Math.floor(Math.random() * 4) + 4} shelves, with ${Math.floor(Math.random() * 10) + 20} books on each shelf. If ${Math.floor(Math.random() * 5) + 5} books are damaged and taken away, how many good books remain?`,
+                calc: (s, r, dam) => (s * r) - dam
+            },
+            {
+                q: `During a school activity, ${name1} distributes ${Math.floor(Math.random() * 3) + 3} packets of crayons to students. Each packet has ${Math.floor(Math.random() * 6) + 12} crayons. ${name2} brings ${Math.floor(Math.random() * 4) + 6} extra crayons. What is the total number of crayons?`,
+                calc: (pk, cr, ex) => (pk * cr) + ex
+            }
+        ];
+
+        const template = templates[Math.floor(Math.random() * templates.length)];
+        let p1 = Math.floor(Math.random() * 3) + 3;
+        let p2 = Math.floor(Math.random() * 10) + 20;
+        let p3 = Math.floor(Math.random() * 4) + 2;
+
+        currentHOTS = {
+            text: template.q(p1, p2, p3),
+            ans: template.calc(p1, p2, p3)
+        };
+
+        document.getElementById('hotsQuestionText').innerText = currentHOTS.text;
+        document.getElementById('hotsUserAnswer').value = '';
+        document.getElementById('hotsUserAnswer').classList.remove('correct-field', 'error-field');
+        document.getElementById('hotsOutput').style.display = 'none';
+    }
+
+    function verifyHOTSAnswer() {
+        const userAns = parseInt(document.getElementById('hotsUserAnswer').value);
+        const ansInput = document.getElementById('hotsUserAnswer');
+        const output = document.getElementById('hotsOutput');
+
+        output.style.display = 'block';
+        ansInput.classList.remove('correct-field', 'error-field');
+
+        if (userAns === currentHOTS.ans) {
+            ansInput.classList.add('correct-field');
+            output.innerHTML = `<span style="color:var(--success); font-weight:bold;">🎉 Brilliant! Your HOTS reasoning and final answer are correct (${currentHOTS.ans}).</span>`;
+        } else {
+            ansInput.classList.add('error-field');
+            output.innerHTML = `<span style="color:var(--error); font-weight:bold;">❌ Not quite right. The correct total answer is ${currentHOTS.ans}. Try breaking the problem down into equal groups!</span>`;
+        }
+    }
+
+    // --- MODULE 4: INTERACTIVE MCQS ---
+    const mcqBank = [
+        {
+            q: "What does multiplication represent in equal groups?",
+            options: ["Repeated addition of equal amounts", "Random grouping of numbers", "Division of remainders", "Subtraction of unequal sets"],
+            correct: 0,
+            exp: "Multiplication is a shortcut for adding equal groups together repeatedly!"
+        },
+        {
+            q: "If a packet contains 25 toffees, how many toffees are in 8 such equal packets?",
+            options: ["180", "200", "220", "250"],
+            correct: 1,
+            exp: "25 × 8 = 200 toffees in total."
+        },
+        {
+            q: "Using the doubling and halving strategy, 4 × 35 is equal to which simplified problem?",
+            options: ["2 × 70", "8 × 35", "4 × 70", "2 × 35"],
+            correct: 0,
+            exp: "Half of 4 is 2, and double of 35 is 70. So 4 × 35 = 2 × 70 = 140."
+        },
+        {
+            q: "How do you break down 135 × 4 using place values?",
+            options: ["(100×4) + (30×4) + (5×4)", "(100×1) + (30×3) + (5×4)", "(130×4) + (5×1)", "(100+4) × (35+4)"],
+            correct: 0,
+            exp: "We multiply each place value (100, 30, and 5) by the multiplier 4 separately and add them up."
+        }
+    ];
+
+    let currentMCQIndex = 0;
+
+    function renderMCQ() {
+        const mcq = mcqBank[currentMCQIndex];
+        const container = document.getElementById('mcqContainer');
+
+        let html = `
+            <div class="mcq-question-box">
+                <p style="font-weight: 700; color: var(--primary); font-size: 1.15rem; margin-bottom: 15px;">Question ${currentMCQIndex + 1} of ${mcqBank.length}: ${mcq.q}</p>
+                <div class="mcq-options">
+        `;
+
+        mcq.options.forEach((opt, idx) => {
+            html += `<button class="mcq-option-btn" onclick="checkMCQ(${idx}, this)">${String.fromCharCode(65 + idx)}. ${opt}</button>`;
+        });
+
+        html += `</div><div id="mcqFeedback" style="margin-top: 15px; font-weight: 600; display:none;"></div></div>`;
+        container.innerHTML = html;
+    }
+
+    function checkMCQ(selectedIdx, btnElement) {
+        const mcq = mcqBank[currentMCQIndex];
+        const allButtons = document.querySelectorAll('.mcq-option-btn');
+        
+        allButtons.forEach((btn, idx) => {
+            btn.disabled = true;
+            if (idx === mcq.correct) {
+                btn.classList.add('correct');
+            } else if (idx === selectedIdx) {
+                btn.classList.add('incorrect');
+            }
+        });
+
+        const feedback = document.getElementById('mcqFeedback');
+        feedback.style.display = 'block';
+
+        if (selectedIdx === mcq.correct) {
+            feedback.innerHTML = `<span style="color:var(--success);">🎉 Correct! ${mcq.exp}</span>`;
+        } else {
+            feedback.innerHTML = `<span style="color:var(--error);">❌ Incorrect. ${mcq.exp}</span>`;
+        }
+    }
+
+    function loadNextMCQ() {
+        currentMCQIndex = (currentMCQIndex + 1) % mcqBank.length;
+        renderMCQ();
+    }
+
     autoGenerateQuestion();
 </script>
 
