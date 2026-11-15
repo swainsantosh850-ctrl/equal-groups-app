@@ -126,12 +126,26 @@
             border-radius: 8px;
             font-size: 1.1rem;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
             background: #fff;
         }
 
         input[type="number"]:focus {
             border-color: var(--primary);
+        }
+
+        /* Dynamic validation input states */
+        input.correct-field {
+            border-color: var(--success) !important;
+            background-color: #f0fdf4 !important;
+            color: #166534;
+            font-weight: bold;
+        }
+
+        input.error-field {
+            border-color: var(--error) !important;
+            background-color: #fef2f2 !important;
+            color: #991b1b;
         }
 
         .row-inputs {
@@ -257,7 +271,7 @@
     <!-- MODULE 1: PLACE-VALUE BREAKDOWN -->
     <div id="breakdown" class="card active">
         <h2>Place-Value Breakdown Multiplication</h2>
-        <p style="margin-bottom: 20px; color: var(--text-muted);">Set your multiplier and enter your 3-digit number breakdown. Then type the place values and partial products yourself!</p>
+        <p style="margin-bottom: 20px; color: var(--text-muted);">Set your multiplier and enter your 3-digit number breakdown. Type your place values and partial products — correct answers will instantly glow green!</p>
 
         <div class="input-group" style="max-width: 300px;">
             <label for="bdMultiplier">Enter Multiplier:</label>
@@ -327,7 +341,7 @@
         <!-- Final Answer Box -->
         <div class="final-answer-card">
             <label for="ansFinal"><strong>Total Final Answer:</strong></label>
-            <input type="number" class="step-input" id="ansFinal" placeholder="Final Sum" style="width: 160px; border-color: var(--success);">
+            <input type="number" class="step-input" id="ansFinal" placeholder="Final Sum" style="width: 160px;">
         </div>
 
         <button class="action-btn" onclick="verifyBreakdownAnswer()">Verify My Calculation</button>
@@ -338,7 +352,7 @@
     <!-- MODULE 2: DOUBLING & HALVING -->
     <div id="doubling" class="card">
         <h2>Doubling and Halving Mental Math Strategy</h2>
-        <p style="margin-bottom: 20px; color: var(--text-muted);">Pair an <strong>even multiplier</strong> with a <strong>multiple of 5</strong>. Follow the clean steps below to solve easily!</p>
+        <p style="margin-bottom: 20px; color: var(--text-muted);">Pair an <strong>even multiplier</strong> with a <strong>multiple of 5</strong>. Follow the steps below to solve!</p>
 
         <div class="row-inputs input-group">
             <div>
@@ -376,7 +390,7 @@
 
         <div class="final-answer-card">
             <label for="inputFinalAns"><strong>New Simplified Problem Product:</strong></label>
-            <input type="number" class="step-input" id="inputFinalAns" placeholder="Final Answer" style="width: 160px; border-color: var(--success);">
+            <input type="number" class="step-input" id="inputFinalAns" placeholder="Final Answer" style="width: 160px;">
         </div>
 
         <button class="action-btn" onclick="verifyDoublingHalving()">Verify Strategy & Explanation</button>
@@ -411,14 +425,23 @@
         const c10 = parseInt(document.getElementById('count10s').value) || 0;
         const c1 = parseInt(document.getElementById('count1s').value) || 0;
 
-        const userVal100 = parseInt(document.getElementById('inputVal100').value);
-        const userVal10 = parseInt(document.getElementById('inputVal10').value);
-        const userVal1 = parseInt(document.getElementById('inputVal1').value);
+        const val100El = document.getElementById('inputVal100');
+        const val10El = document.getElementById('inputVal10');
+        const val1El = document.getElementById('inputVal1');
 
-        const userAns100 = parseInt(document.getElementById('ans100').value);
-        const userAns10 = parseInt(document.getElementById('ans10').value);
-        const userAns1 = parseInt(document.getElementById('ans1').value);
-        const userFinal = parseInt(document.getElementById('ansFinal').value);
+        const ans100El = document.getElementById('ans100');
+        const ans10El = document.getElementById('ans10');
+        const ans1El = document.getElementById('ans1');
+        const ansFinalEl = document.getElementById('ansFinal');
+
+        const userVal100 = parseInt(val100El.value);
+        const userVal10 = parseInt(val10El.value);
+        const userVal1 = parseInt(val1El.value);
+
+        const userAns100 = parseInt(ans100El.value);
+        const userAns10 = parseInt(ans10El.value);
+        const userAns1 = parseInt(ans1El.value);
+        const userFinal = parseInt(ansFinalEl.value);
         
         const output = document.getElementById('breakdownOutput');
 
@@ -433,32 +456,48 @@
         const correct1 = correctVal1 * m;
         const correctFinal = totalNumber * m;
 
+        // Helper function to color input fields
+        function setFieldStatus(element, isCorrect) {
+            element.classList.remove('correct-field', 'error-field');
+            if (!isNaN(element.value) && element.value !== '') {
+                element.classList.add(isCorrect ? 'correct-field' : 'error-field');
+            }
+        }
+
+        setFieldStatus(val100El, userVal100 === correctVal100);
+        setFieldStatus(val100El, userVal100 === correctVal100);
+        setFieldStatus(val10El, userVal10 === correctVal10);
+        setFieldStatus(val1El, userVal1 === correctVal1);
+
+        setFieldStatus(ans100El, userAns100 === correct100);
+        setFieldStatus(ans10El, userAns10 === correct10);
+        setFieldStatus(ans1El, userAns1 === correct1);
+        setFieldStatus(ansFinalEl, userFinal === correctFinal);
+
         let areValuesCorrect = (userVal100 === correctVal100 && userVal10 === correctVal10 && userVal1 === correctVal1);
         let areProductsCorrect = (userAns100 === correct100 && userAns10 === correct10 && userAns1 === correct1 && userFinal === correctFinal);
 
         output.style.display = 'block';
 
         if (areValuesCorrect && areProductsCorrect) {
-            output.innerHTML = `<span style="color:var(--success); font-weight:bold;">🎉 Fantastic job! All your typed place values, partial products, and final answer are correct.</span><br><br>` +
+            output.innerHTML = `<span style="color:var(--success); font-weight:bold;">🎉 Fantastic job! All correct answers have turned green.</span><br><br>` +
                 `<strong>Equation:</strong> ${totalNumber} × ${m} = <strong>${correctFinal}</strong>`;
         } else {
-            let msg = `<span style="color:var(--error); font-weight:bold;">❌ Not quite right. Check your typed values and calculations!</span><br><br>`;
-            if (!areValuesCorrect) {
-                msg += `• <strong>Place Value Check:</strong> For counts ${c100} hundreds, ${c10} tens, and ${c1} ones, you should type <strong>${correctVal100}</strong>, <strong>${correctVal10}</strong>, and <strong>${correctVal1}</strong>.<br>`;
-            }
-            if (!areProductsCorrect) {
-                msg += `• <strong>Correct Products:</strong> (${correctVal100} × ${m}) = ${correct100} | (${correctVal10} × ${m}) = ${correct10} | (${correctVal1} × ${m}) = ${correct1} (Total: ${correctFinal})<br>`;
-            }
-            output.innerHTML = msg;
+            output.innerHTML = `<span style="color:var(--error); font-weight:bold;">❌ Some fields are incorrect (marked in red). Correct fields have turned green!</span>`;
         }
     }
 
     function verifyDoublingHalving() {
         const multiplier = parseInt(document.getElementById('dhEvenMultiplier').value) || 0;
         const number = parseInt(document.getElementById('dhMultipleOf5').value) || 0;
-        const userHalf = parseInt(document.getElementById('inputHalf').value);
-        const userDouble = parseInt(document.getElementById('inputDouble').value);
-        const userFinal = parseInt(document.getElementById('inputFinalAns').value);
+        
+        const halfEl = document.getElementById('inputHalf');
+        const doubleEl = document.getElementById('inputDouble');
+        const finalEl = document.getElementById('inputFinalAns');
+
+        const userHalf = parseInt(halfEl.value);
+        const userDouble = parseInt(doubleEl.value);
+        const userFinal = parseInt(finalEl.value);
         const output = document.getElementById('doublingOutput');
 
         output.style.display = 'block';
@@ -472,21 +511,28 @@
         const correctDouble = number * 2;
         const correctFinal = correctHalf * correctDouble;
 
+        function setFieldStatus(element, isCorrect) {
+            element.classList.remove('correct-field', 'error-field');
+            if (!isNaN(element.value) && element.value !== '') {
+                element.classList.add(isCorrect ? 'correct-field' : 'error-field');
+            }
+        }
+
+        setFieldStatus(halfEl, userHalf === correctHalf);
+        setFieldStatus(doubleEl, userDouble === correctDouble);
+        setFieldStatus(finalEl, userFinal === correctFinal);
+
         let isCorrect = (userHalf === correctHalf && userDouble === correctDouble && userFinal === correctFinal);
 
         if (isCorrect) {
-            output.innerHTML = `<span style="color:var(--success); font-weight:bold;">🎉 Excellent! All steps are correct.</span><br><br>` +
+            output.innerHTML = `<span style="color:var(--success); font-weight:bold;">🎉 Excellent! All correct steps have turned green.</span><br><br>` +
                 `<strong>Step-by-Step Explanation:</strong><br>` +
                 `1. Original problem: ${multiplier} × ${number}<br>` +
                 `2. <strong>Making Half:</strong> ${multiplier} ÷ 2 = ${correctHalf}<br>` +
                 `3. <strong>Making Double:</strong> ${number} × 2 = ${correctDouble}<br>` +
                 `4. <strong>Final Verification:</strong> ${correctHalf} × ${correctDouble} = <strong>${correctFinal}</strong>`;
         } else {
-            output.innerHTML = `<span style="color:var(--error); font-weight:bold;">❌ Not quite right. Check your values!</span><br><br>` +
-                `<strong>Correct Breakdown:</strong><br>` +
-                `• Making Half (${multiplier} ÷ 2) = <strong>${correctHalf}</strong><br>` +
-                `• Making Double (${number} × 2) = <strong>${correctDouble}</strong><br>` +
-                `• Final Answer (${correctHalf} × ${correctDouble}) = <strong>${correctFinal}</strong>`;
+            output.innerHTML = `<span style="color:var(--error); font-weight:bold;">❌ Review your values! Correct inputs are highlighted in green.</span>`;
         }
     }
 </script>
